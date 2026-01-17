@@ -4,6 +4,12 @@
 
 <a name="english"></a>
 
+### 🚀项目所对应的视频：
+
+https://youtu.be/Qydk2wlh4YI
+
+https://www.bilibili.com/video/BV1KErQB4Esx/
+
 # Code Review Router
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
