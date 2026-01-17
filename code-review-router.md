@@ -201,24 +201,26 @@ Before executing, output:
 **Executing review...**
 ```
 
-### CLI Commands (with 120-second timeout)
+### CLI Commands
 
-> **Note:** Gemini receives the diff via stdin (piped), while Codex reads the git context directly. If debugging, check that `git diff HEAD` produces output before running Gemini.
+> **Note:** Gemini receives the diff via stdin (piped), while Codex uses `exec` subcommand for non-interactive mode and reads the git context directly. If debugging, check that `git diff HEAD` produces output before running Gemini.
 
 **For Gemini:**
 ```bash
 # Pipe diff to Gemini with review prompt
-timeout 120 bash -c 'git --no-pager diff HEAD | gemini -p "Review this code diff for: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."'
+git --no-pager diff HEAD | gemini -p "Review this code diff for: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."
 ```
 
 **For Codex:**
 ```bash
-timeout 120 codex "Review the current git diff for: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."
+# Use 'exec' subcommand for non-interactive mode (required when not in a terminal)
+# --sandbox workspace-write allows Codex to read git context
+codex exec --sandbox read-only "Review the current git diff for: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."
 ```
 
 ## Step 7: Handle Failures with Fallback
 
-If the chosen CLI fails (non-zero exit, timeout after 120s, or error output):
+If the chosen CLI fails (non-zero exit or error output):
 
 1. **Report the failure:**
    ```
@@ -226,7 +228,7 @@ If the chosen CLI fails (non-zero exit, timeout after 120s, or error output):
    Attempting fallback to [other CLI]...
    ```
 
-2. **Try the alternative CLI** (with same timeout)
+2. **Try the alternative CLI**
 
 3. **If fallback also fails:**
    ```
