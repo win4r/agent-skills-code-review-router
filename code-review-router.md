@@ -203,7 +203,7 @@ Before executing, output:
 
 ### CLI Commands
 
-> **Note:** Gemini receives the diff via stdin (piped), while Codex uses `exec` subcommand for non-interactive mode and reads the git context directly. If debugging, check that `git diff HEAD` produces output before running Gemini.
+> **Note:** Gemini receives the diff via stdin (piped), while Codex has a dedicated `review` subcommand that reads the git context directly. If debugging, check that `git diff HEAD` produces output before running Gemini.
 
 **For Gemini:**
 ```bash
@@ -213,9 +213,9 @@ git --no-pager diff HEAD | gemini -p "Review this code diff for: 1) Code quality
 
 **For Codex:**
 ```bash
-# Use 'exec' subcommand for non-interactive mode (required when not in a terminal)
-# --sandbox workspace-write allows Codex to read git context
-codex exec --sandbox read-only "Review the current git diff for: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."
+# Use dedicated 'review' subcommand for non-interactive code review
+# --uncommitted reviews staged, unstaged, and untracked changes
+codex review --uncommitted "Focus on: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."
 ```
 
 ## Step 7: Handle Failures with Fallback
