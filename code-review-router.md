@@ -214,8 +214,8 @@ git --no-pager diff HEAD | gemini -p "Review this code diff for: 1) Code quality
 **For Codex:**
 ```bash
 # Use dedicated 'review' subcommand for non-interactive code review
-# --uncommitted reviews staged, unstaged, and untracked changes
-codex review --uncommitted "Focus on: 1) Code quality issues, 2) Best practices violations, 3) Potential bugs, 4) Security concerns, 5) Performance issues. Provide specific, actionable feedback."
+# Note: --uncommitted and [PROMPT] are mutually exclusive
+codex review --uncommitted
 ```
 
 ## Step 7: Handle Failures with Fallback
